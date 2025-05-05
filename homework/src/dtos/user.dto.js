@@ -14,18 +14,14 @@ export const bodyToUser = (body) => {
 };
 
 export const responseFromUser = ({ user, preferences }) => {
-  const birthDate = new Date(user.birth);
-  const formattedBirth = birthDate.toISOString().split('T')[0];
+  const preferFoods = preferences.map(
+    (preference) => preference.foodCategory.name
+  );
 
   return {
     email: user.email,
     name: user.name,
-    gender: user.gender,
-    birth: formattedBirth,
-    address: user.address || "",
-    detailAddress: user.detailAddress || "",
-    phoneNumber: user.phoneNumber,
-    preferences: preferences || [],
+    preferCategory: preferFoods,
   };
 };
 

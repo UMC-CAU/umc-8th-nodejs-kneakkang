@@ -1,10 +1,16 @@
-import { addMission } from '../repositories/mission.repository.js';
 import {
-    findMissionById,
-    findUserMission,
-    addUserMission,
-  } from '../repositories/mission.repository.js';
+  addMission,
+  findMissionById,
+  findUserMission,
+  addUserMission,
+  getUserMissions,
+  completeUserMission,
+} from '../repositories/mission.repository.js';
+
 import { findOwnerByStoreId } from '../repositories/owner.repository.js';
+import { responseFromUserMissions } from '../dtos/mission.dto.js';
+
+
 
   export const createMission = async (data) => {
     const { store_id, point, deadline, mission_detail } = data;
@@ -15,7 +21,6 @@ import { findOwnerByStoreId } from '../repositories/owner.repository.js';
       throw new Error('해당 store_id에 대한 owner가 존재하지 않습니다.');
     }
   
-    // 2. mission 생성
     const missionId = await addMission({
       store_id,
       point,
@@ -23,7 +28,6 @@ import { findOwnerByStoreId } from '../repositories/owner.repository.js';
       mission_detail,
     });
   
-    // 3. 응답 반환
     return {
       mission_id: missionId,
       store_id,
@@ -46,12 +50,28 @@ import { findOwnerByStoreId } from '../repositories/owner.repository.js';
     }
   
     const userMissionId = await addUserMission({
-      mission_id,
-      user_id,
-      store_id: mission.store_id,
-      owner_number: mission.owner_number,
-      status: 0, // 도전 중
-    });
+        mission_id,
+        user_id,
+        store_id : mission.storeId,
+        owner_number: mission.owner_number,
+        status: true,  
+        mission: {
+          connect: { id: mission_id }  
+        }
+      });
+      
   
     return { message: '미션 도전이 성공적으로 등록되었습니다.', user_mission_id: userMissionId };
   };
+
+export const listUserMissions = async (userId, status, cursor) => {
+  const missions = await getUserMissions(userId, status, cursor);
+  return responseFromUserMissions(missions);
+};
+
+export const updateMissionStatus = async (userId, missionId) => {
+  const updated = await completeUserMission(userId, missionId);
+  if (!updated) {
+    throw new Error("해당 미션이 존재하지 않거나 이미 완료됨");
+  }
+};

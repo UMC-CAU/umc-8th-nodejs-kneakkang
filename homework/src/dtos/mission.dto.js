@@ -19,3 +19,12 @@ export const responseFromMission = ({ mission_id, store_id, point, deadline, mis
       owner_number
     };
   };
+
+  export const responseFromUserMissions = (userMissions) => {
+    return {
+      data: userMissions,
+      pagination: {
+        cursor: userMissions.length ? userMissions[userMissions.length - 1].id : null,
+      },
+    };
+  };

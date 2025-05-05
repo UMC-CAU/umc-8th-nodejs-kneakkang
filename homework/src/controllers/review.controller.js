@@ -1,4 +1,4 @@
-import { createReview } from '../services/review.service.js'; // review.service.js에서 createReview를 가져온다.
+import { createReview } from '../services/review.service.js'; 
 
 export const handleCreateReview = async (req, res) => {
     const { store_id } = req.params;

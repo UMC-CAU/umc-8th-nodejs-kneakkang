@@ -1,6 +1,9 @@
+import { StatusCodes } from "http-status-codes";
 import { createMission } from '../services/mission.service.js';
 import { bodyToMission, responseFromMission } from '../dtos/mission.dto.js';
 import { challengeMission } from '../services/mission.service.js';
+import { listUserMissions } from '../services/mission.service.js';
+import { updateMissionStatus } from "../services/mission.service.js";
 
 export const handleCreateMission = async (req, res) => {
   const { store_id } = req.params;
@@ -30,3 +33,23 @@ export const handleChallengeMission = async (req, res) => {
       res.status(400).json({ message: error.message });
     }
   };
+
+export const handleListUserMissions = async (req, res, next) => {
+      const userId = parseInt(req.params.userId);
+      const status = req.query.status ? parseInt(req.query.status) : undefined;
+      const cursor = typeof req.query.cursor === "string" ? parseInt(req.query.cursor) : undefined;
+
+      const userMissions = await listUserMissions(userId, status, cursor);
+      res.status(StatusCodes.OK).json({ userMissions });
+};
+
+export const handleCompleteUserMission = async (req, res) => {
+  const { userId, missionId } = req.params;
+
+  try {
+    await updateMissionStatus(userId, missionId);
+    res.status(StatusCodes.OK).json({ message: "미션 완료 처리됨" });
+  } catch (err) {
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: err.message });
+  }
+};

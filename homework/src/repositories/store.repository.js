@@ -1,11 +1,19 @@
-import { pool } from "../db.config.js";
+import { prisma } from "../db.config.js";
 
 export const findStoreById = async (store_id) => {
-    const conn = await pool.getConnection();
-    try {
-      const [rows] = await conn.query(`SELECT * FROM store WHERE id = ?`, [store_id]);
-      return rows.length > 0 ? rows[0] : null;
-    } finally {
-      conn.release();
-    }
+    const store = await prisma.store.findUnique({
+      where: { id: store_id },
+    });
+  
+    return store;
+  };
+  
+export const getAllStoreReviews = async (storeId, cursor) => {
+    const reviews = await prisma.review.findMany({
+      select: { id: true, name : true, star : true, content : true, createAt : true, updateAt : true },
+      where: { storeId: storeId, ...(cursor && { id: { lte: cursor } }) }, // cursor가 있을 때만 필터
+      orderBy: { id: "asc" },
+    });
+  
+    return reviews;
   };
