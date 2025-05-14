@@ -1,6 +1,7 @@
 // 클라이언트 요청 → 내부 서비스용 객체로 변환
-export const bodyToReview = (body) => {
+export const bodyToReview = (body, store_id) => {
     return {
+      store_id: Number(store_id),
       user_id: body.user_id,
       name: body.name,
       content: body.content,

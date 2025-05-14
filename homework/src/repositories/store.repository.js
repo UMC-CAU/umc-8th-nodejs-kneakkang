@@ -1,12 +1,12 @@
 import { prisma } from "../db.config.js";
 
 export const findStoreById = async (store_id) => {
-    const store = await prisma.store.findUnique({
-      where: { id: store_id },
-    });
-  
-    return store;
-  };
+  const store = await prisma.store.findUnique({
+    where: { id: store_id },
+  });
+
+  return store;
+};
   
 export const getAllStoreReviews = async (storeId, cursor) => {
     const reviews = await prisma.review.findMany({
@@ -17,3 +17,12 @@ export const getAllStoreReviews = async (storeId, cursor) => {
   
     return reviews;
   };
+
+export const findStoreReview = async (store_id) => {
+  const reviews = await prisma.review.findFirst({
+    where: {
+      storeId: store_id,
+    },
+  });
+  return reviews ?? null;
+};
