@@ -47,3 +47,33 @@ export class CompleteMissionError extends Error {
     this.data = data;
   }
 }
+
+export class CreateReviewError extends Error {
+  errorCode = "U006";
+
+  constructor(reason, data) {
+    super(reason);
+    this.reason = reason;
+    this.data = data;
+  }
+}
+
+export class ExistStoreError extends Error {
+  errorCode = "U007";
+
+  constructor(reason, data) {
+    super(reason);
+    this.reason = reason;
+    this.data = data;
+  }
+}
+
+export class ExistReviewError extends Error {
+  errorCode = "U008";
+
+  constructor(reason, data) {
+    super(reason);
+    this.reason = reason;
+    this.data = data;
+  }
+}
