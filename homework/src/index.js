@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import express from "express";
 import swaggerAutogen from "swagger-autogen";
 import swaggerUiExpress from "swagger-ui-express";
+import { swaggerDocument } from "./docs/swaggerDoc.js";
 import { handleUserSignUp } from "./controllers/user.controller.js";
 import { handleCreateReview } from "./controllers/review.controller.js";
 import { handleCreateMission } from "./controllers/mission.controller.js";
@@ -92,10 +93,11 @@ app.get("/openapi.json", async (req, res, next) => {
   const routes = ["./src/index.js"];
   const doc = {
     info: {
-      title: "UMC 7th",
-      description: "UMC 7th Node.js 테스트 프로젝트입니다.",
+      title: "UMC 8th",
+      description: "UMC 8th Node.js 테스트 프로젝트입니다.",
     },
     host: "localhost:3000",
+    ...swaggerDocument,
   };
 
   const result = await swaggerAutogen(options)(outputFile, routes, doc);
