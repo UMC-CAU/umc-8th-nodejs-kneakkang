@@ -39,6 +39,7 @@ export const updateUserInfo = async (userId, data) => {
     where: { id: userId },
     data: {
       name: data.name,
+      gender: data.gender,
       phoneNumber: data.phoneNumber,
       birth: new Date(data.birth),
       address: data.address,
