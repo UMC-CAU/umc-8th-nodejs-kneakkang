@@ -11,6 +11,7 @@ import { handleChallengeMission } from "./controllers/mission.controller.js";
 import { handleListStoreReviews } from "./controllers/store.controller.js";
 import { handleListUserMissions } from "./controllers/mission.controller.js";
 import { handleCompleteUserMission } from "./controllers/mission.controller.js";
+import { handleUpdateUserInfo } from "./controllers/user.controller.js";
 import { PrismaSessionStore } from "@quixo3/prisma-session-store";
 import session from "express-session";
 import passport from "passport";
@@ -84,6 +85,7 @@ app.post("/api/missions/:mission_id", handleChallengeMission);
 app.get("/api/stores/:storeId/reviews", handleListStoreReviews);
 app.get("/api/users/:userId/missions", handleListUserMissions);
 app.patch("/api/users/:userId/missions/:missionId",handleCompleteUserMission);
+app.patch("/api/users/me", handleUpdateUserInfo);
 
 /**
  * 전역 오류를 처리하기 위한 미들웨어

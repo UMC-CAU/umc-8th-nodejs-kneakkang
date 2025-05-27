@@ -1,3 +1,4 @@
+import { prisma } from "../db.config.js";
 import { responseFromUser } from "../dtos/user.dto.js";
 import { DuplicateUserEmailError } from "../errors.js";
 import {
@@ -31,4 +32,18 @@ export const userSignUp = async (data) => {
   const preferences = await getUserPreferencesByUserId(joinUserId);
 
   return responseFromUser({ user, preferences });
+};
+
+export const updateUserInfo = async (userId, data) => {
+  const updated = await prisma.user.update({
+    where: { id: userId },
+    data: {
+      name: data.name,
+      phoneNumber: data.phoneNumber,
+      birth: new Date(data.birth),
+      address: data.address,
+      detailAddress: data.detailAddress,
+    },
+  });
+  return updated;
 };

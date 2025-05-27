@@ -34,5 +34,28 @@ export const userSchemas = {
       data: null
     },
     success: null
-  }
+  },
+  UpdateUserRequest: {
+  type: "object",
+  properties: {
+    name: { type: "string" },
+    phoneNumber: { type: "string" },
+    birth: { type: "string", format: "date" },
+    address: { type: "string" },
+    detailAddress: { type: "string" }
+  },
+  required: ["name", "phoneNumber", "birth"]
+  },
+  UserUpdateSuccessResponse: {
+    type: "object",
+    properties: {
+      id: { type: "integer" },
+      email: { type: "string" },
+      name: { type: "string" },
+      phoneNumber: { type: "string" },
+      birth: { type: "string", format: "date-time" },
+      address: { type: "string" },
+      detailAddress: { type: "string" }
+    }
+  } 
 };

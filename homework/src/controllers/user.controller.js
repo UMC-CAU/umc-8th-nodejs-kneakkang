@@ -2,6 +2,7 @@ import { StatusCodes } from "http-status-codes";
 import { bodyToUser } from "../dtos/user.dto.js";
 import { userSignUp } from "../services/user.service.js";
 import { DuplicateUserEmailError } from "../errors.js"; // 필요 시 사용자 정의 에러 가져오기
+import { updateUserInfo } from "../services/user.service.js";
 
 export const handleUserSignUp = async (req, res, next) => {
   /*
@@ -48,5 +49,42 @@ export const handleUserSignUp = async (req, res, next) => {
       // 예외 처리 미정의 시 next로 전달
       next(err);
     }
+  }
+};
+
+export const handleUpdateUserInfo = async (req, res, next) => {
+  /*
+    #swagger.summary = '회원 정보 수정 API'
+    #swagger.tags = ['User']
+    #swagger.requestBody = {
+      required: true,
+      content: {
+        "application/json": {
+          schema: { $ref: "#/components/schemas/UpdateUserRequest" }
+        }
+      }
+    }
+    #swagger.responses[200] = {
+      description: "회원 정보 수정 성공",
+      content: {
+        "application/json": {
+          schema: { $ref: "#/components/schemas/UserUpdateSuccessResponse" }
+        }
+      }
+    }
+    #swagger.responses[500] = {
+      description: "서버 오류",
+      content: {
+        "application/json": {
+          schema: { $ref: "#/components/schemas/DefaultErrorResponse" }
+        }
+      }
+    }
+  */
+  try {
+    const updatedUser = await updateUserInfo(req.user.id, req.body);
+    res.status(StatusCodes.OK).success(updatedUser);
+  } catch (err) {
+    next(err);
   }
 };
